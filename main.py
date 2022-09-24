@@ -37,7 +37,7 @@ while True:
 
 
     #SnakeApple
-    pygame.draw.rect(win, ORANGE, (x,y , Size - 2,Size - 2))
+    pygame.draw.rect(win, ORANGE, (x,y, Size - 2,Size - 2))
     pygame.draw.rect(win, RED, (*apple, Size, Size))
 
     #Snake Movement
@@ -51,6 +51,7 @@ while True:
     font_score = pygame.font.SysFont('Times New Roman', 26, bold=True)
     render_score = font_score.render(f'SCORE: {score}', 1, pygame.Color('green'))
     win.blit(render_score, (5,5))
+
     #eat apple
     if snake[-1] == apple:
         apple = randrange(0,Res,Size), randrange(0,Res,Size)
@@ -77,7 +78,10 @@ while True:
     if key[pygame.K_RIGHT]:
         dx,dy = 1,0
 
-
+    #KeyExit
+    if key[pygame.K_ESCAPE]:
+        pygame.quit()
+        exit()
 
 
 
@@ -86,4 +90,3 @@ while True:
 
 
     pygame.display.flip()
-
