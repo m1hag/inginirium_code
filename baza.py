@@ -1,25 +1,33 @@
 import sqlite3
 
-bd = sqlite3.connect('Snake.sqlite')
+class Users:
+    def __init__(self, Snake,username):
+        self.con = sqlite3.connect(Snake)
+        self.cur = self.con.cursor()
+        self.create_table('Users')
+        self.name=username
 
-cur = bd.cursor()
+    def create_table(self, table_name):
+        que_create = '''CREATE TABLE IF NOT EXISTS {} (
+            name TEXT,
+            score INTEGER
+        )'''.format(table_name)
+        self.cur_execute(que_create)
+        self.con.commit()
 
+    def get(self, que = 'SELECT * FROM Users'):
+        return self.cur.execute(que).fetchall()
 
-cur.execute('''
-create table if not exists RECORDS (
-    name text,
-    score integer
-)''')
+    def get_best_users(self, que = 'SELECT * FROM users ASC limit 3'):
+        return self.cur.execute(que).fetchall()
 
-cur.execute('''
-SELECT name gamer, max(score) score from RECORDS
-GROUP by name
-ORDER by score DESC
-limit 3
-''')
+    def insert(self, name,score):
+        que_insert = f'''
+        INSERT INTO Users (name,score)
+        VALUES ('{name}, {score})
+        '''
+        self.cur.execute(que_insert)
+        self.con.commit()
 
-result = cur.fetchall()
-print(result)
-
-
-cur.close()
+    def __del__(self):
+        self.con.close()
